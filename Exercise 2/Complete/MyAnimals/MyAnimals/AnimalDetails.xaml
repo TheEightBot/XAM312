@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyAnimals;assembly=MyAnimals"
+             Title="Animal Details"
+             x:Class="MyAnimals.AnimalDetails">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DifficultyToIndexConverter x:Key="difficultyCvt" />
+            <local:ImageResourceConverter x:Key="imageResourceCvt" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <StackLayout Spacing="10">
+            <StackLayout.Padding>
+                <OnPlatform x:TypeArguments="Thickness" iOS="5,20,5,5" Android="5,0,5,5" WinPhone="5,0,5,5" />
+            </StackLayout.Padding>
+
+            <Image HeightRequest="150" Aspect="AspectFit"
+                   Source="{Binding ImageUrl, Converter={StaticResource imageResourceCvt}}" />
+
+            <Label Text="Name" FontAttributes="Bold" />
+            <Entry Text="{Binding Name, Mode=TwoWay}" />
+
+            <Label Text="Description" FontAttributes="Bold" />
+            <Entry Text="{Binding Description, Mode=TwoWay}" />
+
+            <Label Text="Difficulty" FontAttributes="Bold" />
+            <Picker x:Name="difficultyPicker" SelectedIndex="{Binding Difficulty, Mode=TwoWay, Converter={StaticResource difficultyCvt}}">
+                <Picker.Items>
+                    <x:String>Easy</x:String>
+                    <x:String>Medium</x:String>
+                    <x:String>Hard</x:String>
+                </Picker.Items>
+            </Picker>
+
+            <Label Text="Favorite" FontAttributes="Bold" />
+            <Switch IsToggled="{Binding IsFavorite, Mode=TwoWay}" />
+
+        </StackLayout>
+    </ScrollView>
+
+</ContentPage>

@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>Full</DebugType>
+  </PropertyGroup> 
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\bird.png" />
+    <EmbeddedResource Include="Images\butterfly.png" />
+    <EmbeddedResource Include="Images\cat.png" />
+    <EmbeddedResource Include="Images\chicken.png" />
+    <EmbeddedResource Include="Images\crane.png" />
+    <EmbeddedResource Include="Images\elephant.png" />
+    <EmbeddedResource Include="Images\fish.png" />
+    <EmbeddedResource Include="Images\fox.png" />
+    <EmbeddedResource Include="Images\giraffe.png" />
+    <EmbeddedResource Include="Images\monkey.png" />
+    <EmbeddedResource Include="Images\mouse.png" />
+    <EmbeddedResource Include="Images\rabbit.png" />
+    <EmbeddedResource Include="Images\rooster.png" />
+    <EmbeddedResource Include="Images\whale.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Xamarin.Forms" Version="2.5.0.91635" />
+  </ItemGroup>
+
+</Project>

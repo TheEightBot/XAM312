@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:MyAnimals;assembly=MyAnimals"
+             x:Class="MyAnimals.AllAnimals"
+             Title="Origami Animals"
+             Padding="5">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:ImageResourceConverter x:Key="imageResourceCvt" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="editButton" Text="Edit" Clicked="OnEdit" Icon="ic_edit.png" />
+    </ContentPage.ToolbarItems>
+
+    <ListView x:Name="allAnimals"
+            ItemsSource="{Binding .}"
+            ItemTapped="OnItemTapped"
+            ItemSelected="OnItemSelected"
+            IsGroupingEnabled="True"
+            GroupDisplayBinding="{Binding Key}"
+            GroupShortNameBinding="{Binding Key}" 
+            Footer="{Binding Count}"
+            HasUnevenRows="True">
+
+        <ListView.Header>
+            <ContentView Padding="0,5" BackgroundColor="#3498db">
+                <Label FontSize="Large" TextColor="White"
+               Text="All Animals" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" />
+            </ContentView>
+        </ListView.Header>
+        <ListView.FooterTemplate>
+            <DataTemplate>
+                <ContentView Padding="0,5">
+                    <Label FontSize="Small"
+                   Text="{Binding ., StringFormat='{0} animals'}" 
+                   VerticalTextAlignment="Center" HorizontalTextAlignment="End" />
+                </ContentView>
+            </DataTemplate>
+        </ListView.FooterTemplate>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid Padding="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Place behind image to fill in the area with white -->
+                        <BoxView BackgroundColor="White" />
+
+                        <Image Grid.Column="0" WidthRequest="75" HeightRequest="75" Aspect="AspectFit" VerticalOptions="Center"
+                            Source="{Binding ImageUrl, Converter={StaticResource imageResourceCvt}}" />
+                        <StackLayout Grid.Column="1" VerticalOptions="Center" >
+                            <Label Text="{Binding Name}" FontSize="Medium" FontAttributes="Bold" />
+                            <Label Text="{Binding Description}" FontSize="Small" TextColor="Accent" />
+                        </StackLayout>
+                        <Image IsVisible="{Binding IsFavorite}" Grid.Column="2"
+                            VerticalOptions="Center" HorizontalOptions="End" Source="star.png" />
+                        <Label Text="{Binding Difficulty}" Grid.Column="2" VerticalOptions="End" FontSize="Small" />
+                        
+                    </Grid>
+                    <ViewCell.ContextActions>
+                        <MenuItem Text="Delete" Clicked="OnDelete" IsDestructive="true" />
+                    </ViewCell.ContextActions>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
