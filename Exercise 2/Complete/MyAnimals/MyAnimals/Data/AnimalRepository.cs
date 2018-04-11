@@ -27,7 +27,7 @@ namespace MyAnimals
 
                 new Animal {
                     Name = "Cat",
-                    Description = "Represents mystery, balance and idependence",
+                    Description = "Represents mystery, balance and independence",
                     ImageUrl = "cat.png",
                     Difficulty = Difficulty.Medium,
                     IsFavorite = false },
