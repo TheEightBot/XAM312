@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace MyAnimals
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class AllAnimals : ContentPage
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class AllAnimals : ContentPage
+    {
         bool isEditing;
 
         public AllAnimals ()
-		{
-			InitializeComponent ();
+        {
+            InitializeComponent ();
 
-            BindingContext = AnimalRepository.Animals
+            var animalGroups = AnimalRepository.Animals
                 .OrderBy(a => a.Name)
                 .ToLookup(a => a.Name[0].ToString());
+            BindingContext = animalGroups;
+            allAnimals.Footer = AnimalRepository.Animals.Count;
         }
 
         void OnEdit(object sender, EventArgs e)
