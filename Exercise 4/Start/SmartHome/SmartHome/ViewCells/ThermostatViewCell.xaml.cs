@@ -3,9 +3,9 @@ using Xamarin.Forms.Xaml;
 
 namespace SmartHome
 {
-	[XamlCompilation(XamlCompilationOptions.Compile)]
-	public partial class ThermostatViewCell : ViewCell
-	{
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class ThermostatViewCell : ViewCell
+    {
         public ThermostatViewCell()
         {
             InitializeComponent();
