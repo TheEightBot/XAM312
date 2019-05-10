@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 1: Provide a custom cell template for a ListView (XAM312)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>XAM312 Customizing the ListView in Xamarin.Forms</header>
+
+    <section id="main">
+        <h2>Exercise 1: Provide a custom cell template for a ListView (XAM312)</h2>
+<p>This exercise modifies an existing application that displays a list of animals. The app is using a ListView with an ImageCell to display the animals. You will replace the ImageCell with a custom ViewCell template to display additional information and provide additional formatting.</p>
+<figure class="figure">
+<img src="./images/ex1_complete.jpg" alt="Screenshot of the completed exercise." class="exercise portrait bordered" title="Completed exercise" />
+<figcaption class="figure-caption">Completed exercise</figcaption>
+</figure>
+<blockquote class="info-quote">To complete the exercise, you will need <a href="https://www.visualstudio.com/" target="_blank">Visual Studio for Windows or macOS</a> with the <a href="https://visualstudio.microsoft.com/xamarin/" target="_blank">Xamarin development tools</a> installed. You will also need either an emulator/simulator or a device to run the exercise on. Please see the <a href="https://docs.microsoft.com/xamarin/cross-platform/get-started/installation/" target="_blank">setup page</a> if you need help installing the Xamarin development environment.
+</blockquote>
+
+<hr>
+<h2>Open the starter solution</h2>
+<p>Open the starter solution from the <strong>Exercise 1</strong> &gt; <strong>Start</strong> folder in your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a> in either <strong>Visual Studio</strong> on Windows or <strong>Visual Studio for Mac</strong>.</p>
+
+<hr>
+<h2>Replace the ImageCell with a ViewCell</h2>
+<p>The first step is to remove the <code>ImageCell</code> in the <code>ListView</code> defined in <strong>AllAnimals.xaml</strong> and replace it with a <code>ViewCell</code> which allows you to customize the appearance. You'll start by displaying the animal name, description and image.</p>
+<ol>
+<li>Open <strong>AllAnimals.xaml</strong> and locate the <code>ImageCell</code> inside the <code>DataTemplate</code> definition.</li>
+<li>Copy the Binding used for the <code>ImageSource</code> property, you will need it in a moment (for example, copy into NotePad).</li>
+<li>Copy the <code>ImageCell.ContextActions</code> property settings; it should have a single <code>MenuItem</code> assigned to it. This provides the swipe to delete UI which you'll add to your new cell.</li>
+<li>Replace the <code>ImageCell</code> with a <code>ViewCell</code> definition.</li>
+<li>Add the <code>ContextActions</code> from the <code>ImageCell</code> to the <code>ViewCell</code>.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;ListView x:Name=&quot;allAnimals&quot; IsPullToRefreshEnabled=&quot;True&quot;
+        ItemTapped=&quot;OnItemTapped&quot;
+        ItemSelected=&quot;OnItemSelected&quot;&gt;
+    &lt;ListView.ItemTemplate&gt;
+        &lt;DataTemplate&gt;
+            &lt;ViewCell&gt;
+                &lt;ViewCell.ContextActions&gt;
+                    &lt;MenuItem Text=&quot;Delete&quot; Clicked=&quot;OnDelete&quot; IsDestructive=&quot;true&quot; /&gt;
+                &lt;/ViewCell.ContextActions&gt;
+            &lt;/ViewCell&gt;
+        &lt;/DataTemplate&gt;
+    &lt;/ListView.ItemTemplate&gt;
+&lt;/ListView&gt;
+</code></pre>
+
+
+<hr>
+<h2>Add UI to the ImageCell</h2>
+<ol>
+<li>
+Inside the <code>ViewCell</code>, add a <code>Grid</code> with three columns:
+<ul>
+<li><code>&lt;ColumnDefinition Width=&quot;75&quot; /&gt;</code></li>
+<li><code>&lt;ColumnDefinition Width=&quot;*&quot; /&gt;</code></li>
+<li>*<code>&lt;ColumnDefinition Width=&quot;Auto&quot; /&gt;</code></li>
+</ul>
+</li>
+<li>
+In the first column, add an <code>Image</code> and data bind the <code>Source</code> property to the <code>ImageUrl</code> property of the <code>Animal</code>.
+You can use the code you saved from the previous step, don't forget to include the value converter.
+<ul>
+<li>Set the <code>WidthRequest</code> and <code>HeightRequest</code> properties to &quot;75&quot;.</li>
+<li>Set the <code>Aspect</code> property to &quot;AspectFit&quot; so the image looks correct.</li>
+<li>Center the image vertically through the <code>VerticalOptions</code> property.</li>
+</ul>
+</li>
+<li>In the second column, add a <code>StackLayout</code>.</li>
+<li>
+In the <code>StackLayout</code>, add a <code>Label</code> to display the name.
+<ul>
+<li>Bind the <code>Text</code> property to the <code>Name</code> property.</li>
+<li>Set the <code>FontSize</code> property to &quot;Medium&quot;.</li>
+<li>Set the <code>FontAttributes</code> property to &quot;Bold&quot;.</li>
+</ul>
+</li>
+<li>
+Add a second <code>Label</code> to the <code>StackLayout</code> for the description.
+<ul>
+<li>Bind the <code>Text</code> property to the <code>Description</code> property.</li>
+<li>Set the <code>FontSize</code> property to &quot;Small&quot;</li>
+<li>Set the <code>TextColor</code> property to &quot;Accent&quot; to get a reasonable secondary color.</li>
+</ul>
+</li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;ViewCell&gt;
+    &lt;Grid&gt;
+        &lt;Grid.ColumnDefinitions&gt;
+            &lt;ColumnDefinition Width=&quot;75&quot; /&gt;
+            &lt;ColumnDefinition Width=&quot;*&quot; /&gt;
+            &lt;ColumnDefinition Width=&quot;Auto&quot; /&gt;
+        &lt;/Grid.ColumnDefinitions&gt;
+        &lt;Image WidthRequest=&quot;75&quot; HeightRequest=&quot;75&quot; Aspect=&quot;AspectFit&quot;
+                Source=&quot;{Binding ImageUrl, Converter={StaticResource imageResourceCvt}}&quot; /&gt;
+        &lt;StackLayout Grid.Column=&quot;1&quot;&gt;
+            &lt;Label Text=&quot;{Binding Name}&quot;
+                    FontSize=&quot;Medium&quot; FontAttributes=&quot;Bold&quot; /&gt;
+            &lt;Label Text=&quot;{Binding Description}&quot;
+                    FontSize=&quot;Small&quot; TextColor=&quot;Accent&quot; /&gt;
+        &lt;/StackLayout&gt;
+    &lt;/Grid&gt;
+    ...
+&lt;/ViewCell&gt;
+</code></pre>
+
+<figure class="figure">
+<img src="./images/ex1_partial.jpg" alt="Exercise 1 progress screenshot" style='border:1px solid #555555";' />
+</figure>
+
+<hr>
+<h2>Adjust Cell content</h2>
+<ol>
+<li>Xamarin.Forms will auto-size all the rows to the largest row in the data set but it doesn't leave any addition space around the content. Set the <code>RowHeight</code> on the ListView to be <code>&quot;80&quot;</code> to give the content more space.</li>
+<li>Set the <code>VerticalOptions</code> on the cell StackLayout to <code>&quot;Center&quot;</code> so the text content is centered within the cell.</li>
+</ol>
+
+<hr>
+<h2>Add dynamic content to the ViewCell</h2>
+<p>In this step, you'll display a &quot;favorites&quot; icon next to each of the animals that have the <code>IsFavorite</code> property set to true. You'll use an existing icon that is already in the platform-specific projects: <strong>star.png</strong>.</p>
+<ol>
+<li>
+Add an <code>Image</code> to the third column in the <code>Grid</code>
+<ul>
+<li>Set the <code>Source</code> property to &quot;star.png&quot;.</li>
+<li>Set the <code>Grid.Column</code> property to &quot;2&quot;.</li>
+<li>Set the <code>VerticalOptions</code> to &quot;Center&quot;.</li>
+<li>Set the <code>HorizontalOptions</code> to &quot;End&quot; to right-align the icon.</li>
+<li>Bind the <code>IsFavorite</code> property to the image's <code>IsVisible</code> property. Since they are both <code>bool</code> types, there is no conversion necessary.</li>
+</ul>
+</li>
+<li>
+<p>Add a <code>Label</code> to the third column in the <code>Grid</code> to show the difficulty.</p>
+<ul>
+<li>Bind the <code>Text</code> property to the <code>Difficulty</code> enum.</li>
+<li>Set the <code>FontSize</code> property to &quot;Small&quot;.</li>
+<li>Set the <code>Grid.Column</code> property to &quot;2&quot;.</li>
+<li>Set the <code>VerticalOptions</code> to &quot;End&quot; to align the text to the bottom of the cell.</li>
+</ul>
+<pre class="prettyprint-collapse"><code>&lt;Image IsVisible=&quot;{Binding IsFavorite}&quot; Grid.Column=&quot;2&quot;
+    VerticalOptions=&quot;Center&quot;
+    HorizontalOptions=&quot;End&quot; Source=&quot;star.png&quot; /&gt;
+&lt;Label Text=&quot;{Binding Difficulty}&quot; Grid.Column=&quot;2&quot; VerticalOptions=&quot;End&quot; /&gt;
+</code></pre>
+
+</li>
+<li>
+Run the application and verify that the icon is displayed on the right side when the character is marked as a favorite. Try changing the flag by editing the details and navigating back to the list.
+</li>
+</ol>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise, you customized a ListView using a DataTemplate and data binding to take greater control of the visualization and layout of the list view cells.</p>
+<p>You can view the completed solution in the <strong>Exercise 1</strong> &gt; <strong>Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

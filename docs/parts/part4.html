@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 4: Display different cells based on the bound-data (XAM312)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>XAM312 Customizing the ListView in Xamarin.Forms</header>
+
+    <section id="main">
+        <h2>Exercise 4: Display different cells based on the bound-data (XAM312)</h2>
+<p>In this exercise, you'll create and use a DataTemplateSelector to display different cells in a ListView based on the bound data. The application you'll use simulates a &quot;smart home&quot; dashboard that allows the user to see the status and interact with their smart home devices.</p>
+<figure class="figure">
+<img src="./images/ex4_complete.png" alt="Screenshot of the completed exercise." class="exercise portrait bordered" title="Completed exercise" />
+<figcaption class="figure-caption">Completed exercise</figcaption>
+</figure>
+<blockquote class="info-quote">To complete the exercise, you will need <a href="https://www.visualstudio.com/" target="_blank">Visual Studio for Windows or macOS</a> with the <a href="https://visualstudio.microsoft.com/xamarin/" target="_blank">Xamarin development tools</a> installed. You will also need either an emulator/simulator or a device to run the exercise on. Please see the <a href="https://docs.microsoft.com/xamarin/cross-platform/get-started/installation/" target="_blank">setup page</a> if you need help installing the Xamarin development environment.
+</blockquote>
+
+<hr>
+<h2>Open the starter solution</h2>
+<p>Open the starter solution from the <strong>Exercise 4</strong> &gt; <strong>Start</strong> folder in your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a> in either <strong>Visual Studio</strong> on Windows or <strong>Visual Studio for Mac</strong>.</p>
+
+<hr>
+<h2>Explore the Start solution</h2>
+<p>The application simulates an application to control smart home devices. Specifically doorbells with cameras, smart smoke detectors, and smart thermostats.</p>
+<ol>
+<li>Open the start solution in the <strong>Exercise 4</strong> folder.</li>
+<li>Explore the <strong>SmartHome</strong> shared project. The <strong>ViewCells</strong> folder contains three (3) prebuilt ViewCells that aren't currently used. The <strong>Data</strong> and <strong>Devices</strong> folders contain contain the data source and models for the smart devices.</li>
+<li>Open MainPage.xaml.cs.</li>
+<li>Notice that the <code>BindingContext</code> is a collection of <code>SmartDevice</code>s coming from the <code>DeviceManager</code> class.</li>
+<li>Run the application on at least one platform. Currently there is a very simple presentation provided in <strong>MainPage.xaml</strong>.</li>
+</ol>
+
+<hr>
+<h2>Create a DataTemplateSelector</h2>
+<ol>
+<li>In the shared project, create a new class named <strong>DeviceTemplateSelector.</strong></li>
+<li>Add a default constructor.</li>
+<li>Update the class signature to derive from <code>DataTemplateSelector</code>. You'll need to add a <strong>Xamarin.Forms</strong> using statement.</li>
+<li>Override <code>OnSelectTemplate</code>.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>public class DeviceTemplateSelector : DataTemplateSelector
+{
+   public DeviceTemplateSelector()
+   {
+   }
+
+   protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+   {
+   }
+}
+</code></pre>
+
+
+<hr>
+<h2>Choose a DataTemplate</h2>
+<p>Next you'll add the code to select a data template at runtime depending on the smart device being represented in the cell.</p>
+<ol>
+<li>Add three (3) <code>DataTemplate</code> fields, one for each type of smart device. Check the <strong>Devices</strong> folder in the shared project.</li>
+<li>In the constructor, instantiate each <code>DataTemplate</code> and pass in the type of corresponding <code>ViewCell</code>. Check the <strong>ViewCells</strong> folder in the shared project.</li>
+<li>In <code>OnSelectTemplate</code>, check the type of the passed in <code>item</code> parameter. If it matches one of the smart device models, return the appropriate <code>DataTemplate</code>.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>public class DeviceTemplateSelector : DataTemplateSelector
+{
+    DataTemplate doorBellTemplate;
+    DataTemplate smokeTemplate;
+    DataTemplate thermostatTemplate;
+
+   public DeviceTemplateSelector()
+   {
+      doorBellTemplate   = new DataTemplate(typeof(DoorBellViewCell));
+      smokeTemplate      = new DataTemplate(typeof(SmokeDetectorViewCell));
+      thermostatTemplate = new DataTemplate(typeof(ThermostatViewCell));
+   }
+
+   protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+   {
+      if (item is DoorBell)
+         return doorBellTemplate;
+
+      if (item is SmokeDetector)
+         return smokeTemplate;
+
+      if (item is Thermostat)
+         return thermostatTemplate;
+   }
+}
+</code></pre>
+
+
+<hr>
+<h2>Use the DataTemplateSelector in the ListView</h2>
+<p>The last step is to replace the existing DataTemplate definition in your <strong>MainPage.xaml</strong> with the new custom <code>DataTemplateSelector</code>.</p>
+<ol>
+<li>Open <strong>MainPage.xaml.cs</strong>.</li>
+<li>Add a local namespace so you can reach your data template selector class: <code>xmlns:local=&quot;clr-namespace:SmartHome&quot;</code></li>
+<li>Create a page-level <code>ResourceDictionary</code>.</li>
+<li>In the resource dictionary, add a <code>DeviceTemplateSelector</code> with a key of <strong>DeviceSelector</strong>: <code>&lt;local:DeviceTemplateSelector x:Key=&quot;DeviceSelector&quot; /&gt;</code>.</li>
+<li>Find the old <code>DataTemplate</code> definition assigned to the <code>ListView</code> and delete it.</li>
+<li>Also delete the <code>ListView.ItemTemplate</code> tags, you'll assign the DataTemplateSelector to ItemTemplate directly.</li>
+<li>Set the <code>ItemTemplate</code> property on the <code>ListView</code> to your data template selector as a <code>StaticResource</code> using the <strong>DeviceSelector</strong> key.</li>
+<li>Add set <code>HasUnevenRows</code> to <code>True</code> so the list view respects the different heights of your view cells.</li>
+<li>Run the application, you should see three (3) different view cells; one for each device type.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;ContentPage.Resources&gt;
+    &lt;ResourceDictionary&gt;
+        &lt;local:DeviceTemplateSelector x:Key=&quot;DeviceSelector&quot; /&gt;
+    &lt;/ResourceDictionary&gt;
+&lt;/ContentPage.Resources&gt;
+
+&lt;ListView ItemsSource=&quot;{Binding .}&quot; ItemTemplate=&quot;{StaticResource DeviceSelector}&quot; HasUnevenRows=&quot;True&quot; /&gt;
+</code></pre>
+
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise, you used a DataTemplateSelector to display multiple ViewCells in a ListView.</p>
+<p>You can view the completed solution in the <strong>Exercise 4</strong> &gt; <strong>Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

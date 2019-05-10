@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 3: Add grouping support to a list (XAM312)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>XAM312 Customizing the ListView in Xamarin.Forms</header>
+
+    <section id="main">
+        <h2>Exercise 3: Add grouping support to a list (XAM312)</h2>
+<p>In this exercise, you'll add grouping and sorting support to the ListView so that the animals are grouped by the first letter of their name.</p>
+<figure class="figure">
+<img src="./images/ex3_complete.jpg" alt="Screenshot of the completed exercise." class="exercise portrait bordered" title="Completed exercise" />
+<figcaption class="figure-caption">Completed exercise</figcaption>
+</figure>
+<blockquote class="info-quote">To complete the exercise, you will need <a href="https://www.visualstudio.com/" target="_blank">Visual Studio for Windows or macOS</a> with the <a href="https://visualstudio.microsoft.com/xamarin/" target="_blank">Xamarin development tools</a> installed. You will also need either an emulator/simulator or a device to run the exercise on. Please see the <a href="https://docs.microsoft.com/xamarin/cross-platform/get-started/installation/" target="_blank">setup page</a> if you need help installing the Xamarin development environment.
+</blockquote>
+
+<hr>
+<h2>Open the starter solution</h2>
+<p>Open the starter solution from the <strong>Exercise 3</strong> &gt; <strong>Start</strong> folder in your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a> in either <strong>Visual Studio</strong> on Windows or <strong>Visual Studio for Mac</strong>.</p>
+
+<hr>
+<h2>Turn on grouping support in the ListView</h2>
+<ol>
+<li>Set the <code>ListView.IsGroupingEnabled</code> property to <code>true</code> in the XAML markup.</li>
+<li>Add a binding for the <code>GroupDisplayBinding</code> property so it uses the <code>Key</code> property being supplied by the LINQ <code>GroupBy</code> expression which is populating the <code>ListView</code>.</li>
+<li>Run the application to see the results. It should now be grouped by the first letter.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;ListView x:Name=&quot;allAnimals&quot; ItemsSource=&quot;{Binding .}&quot;
+        ...
+        <mark>IsGroupingEnabled=&quot;true&quot;</mark>
+        <mark>GroupDisplayBinding=&quot;{Binding Key}&quot;</mark>&gt;
+</code></pre>
+
+
+<hr>
+<h2>Enable the quick jump index</h2>
+<ol>
+<li>Set the <code>ListView.GroupShortNameBinding</code> property to data bind to the <code>Key</code> property of your grouped collection.</li>
+<li>Run the application to see the quick index. On iOS it will appear on the right side of the ListView, on Windows UWP, it can be accessed by tapping on the headers, and on Android it appears when scrolling the ListView.</li>
+</ol>
+<pre class="prettyprint-collapse"><code>&lt;ListView ...
+    IsGroupingEnabled=&quot;true&quot;
+    GroupDisplayBinding=&quot;{Binding Key}&quot;
+    &lt;span class=&quot;highlight&quot;&gt;GroupShortNameBinding=&quot;{Binding Key}&quot;&lt;/span&gt;&gt;
+</code></pre>
+
+<figure class="figure">
+<img src="./images/ex3_quick.png" alt="Screenshot with quick jump index" style="width: 360px;" />
+</figure>
+
+<hr>
+<h2>Optional: UI improvements</h2>
+<ol>
+<li>
+The group headers are quite large. This is because you set the <code>RowHeight</code> on the <code>ListView</code> to be &quot;80&quot; which also sets the group header cell height.
+<ul>
+<li><strong>The Fix:</strong> Use the <code>HasUnevenRows</code> on the <code>ListView</code> and add padding on the Grid in the DataTemplate. This will allow each cell to size to content while still leaving some white-space around the content cells.</li>
+<li>You'll also need to remove the <code>RowHeight</code> assignment on the <code>ListView</code>.</li>
+</ul>
+</li>
+<li>If you run the application on Android where the background is black, the different image sizes are a bit jarring. How can you fix this? <em>Hint: think about placing something behind the image to color the space.</em></li>
+</ol>
+<p>See if you can fix each of these issues. The completed solution shows a possible solution for each issue.</p>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise, you implemented the grouping feature for the ListView to display grouped data separated with a header.</p>
+<p>You can view the completed solution in the <strong>Exercise 3</strong> &gt; <strong>Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 2: Add a header and footer to the ListView (XAM312)</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>XAM312 Customizing the ListView in Xamarin.Forms</header>
+
+    <section id="main">
+        <h2>Exercise 2: Add a header and footer to the ListView (XAM312)</h2>
+<p>In this exercise, you'll add a header and footer definition to a ListView.</p>
+<figure class="figure">
+<img src="./images/ex2_complete.png" alt="Screenshot of the completed exercise." class="exercise portrait bordered" title="Completed exercise" />
+<figcaption class="figure-caption">Completed exercise</figcaption>
+</figure>
+<blockquote class="info-quote">To complete the exercise, you will need <a href="https://www.visualstudio.com/" target="_blank">Visual Studio for Windows or macOS</a> with the <a href="https://visualstudio.microsoft.com/xamarin/" target="_blank">Xamarin development tools</a> installed. You will also need either an emulator/simulator or a device to run the exercise on. Please see the <a href="https://docs.microsoft.com/xamarin/cross-platform/get-started/installation/" target="_blank">setup page</a> if you need help installing the Xamarin development environment.
+</blockquote>
+
+<hr>
+<h2>Open the starter solution</h2>
+<p>Open the starter solution from the <strong>Exercise 2</strong> &gt; <strong>Start</strong> folder in your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a> in either <strong>Visual Studio</strong> on Windows or <strong>Visual Studio for Mac</strong>.</p>
+
+<hr>
+<h2>Add the Header</h2>
+<p>In this first step, you'll add a static header to the top of the <code>ListView</code>.</p>
+<ol>
+<li>Open <strong>AllAnimals.xaml</strong> and locate the <code>ListView</code>.</li>
+<li>
+<p>Set the <code>Header</code> property to the value &quot;Origami Animals&quot;.</p>
+<pre class="prettyprint-collapse"><code>&lt;ListView x:Name=&quot;allAnimals&quot; ...
+        <mark>Header=&quot;All Animals&quot;</mark>&gt;
+</code></pre>
+
+</li>
+<li>
+Run the application and notice the text is displayed in a regular-sized font at the top of the control.
+</li>
+<li>Stop the application and remove the Header property setter you just added. You'll replace it with something visually more interesting in the next step.</li>
+<li>
+<p>Set the <code>Header</code> property using the following code:</p>
+<pre class="prettyprint"><code>&lt;ListView.Header&gt;
+    &lt;ContentView Padding=&quot;0,5&quot; BackgroundColor=&quot;#3498db&quot;&gt;
+        &lt;Label FontSize=&quot;Large&quot; TextColor=&quot;White&quot;
+               Text=&quot;All Animals&quot; HorizontalTextAlignment=&quot;Center&quot;
+               VerticalTextAlignment=&quot;Center&quot; /&gt;
+    &lt;/ContentView&gt;
+&lt;/ListView.Header&gt;
+</code></pre>
+
+</li>
+</ol>
+
+<hr>
+<h2>Add the Footer</h2>
+<p>Next, you'll add a dynamic footer to the bottom of the <code>ListView</code> that displays the total number of animals in the list. To make the number of items in the collection easier to get, you'll set the collection to be your <code>BindingContext</code>.</p>
+<ol>
+<li>Open <strong>AllAnimals.xaml.cs</strong> and locate the constructor.</li>
+<li>Remove the line of code that sets the <code>ItemSource</code> of the <code>ListView</code>.</li>
+<li>
+<p>Set the <code>BindingContext</code> for the page to the collection.</p>
+<pre class="prettyprint-collapse"><code>public AllAnimals()
+{
+    InitializeComponent();
+    <mark>BindingContext = AnimalRepository.Animals;</mark>
+}
+</code></pre>
+
+</li>
+<li>
+Remove the line of code that sets the <code>ItemSource</code> of the <code>ListView</code>.
+Switch back to the XAML. Add a property setter on the <code>ListView</code> to set the <code>ItemsSource</code> to the <code>BindingContext</code> (<code>{Binding .}</code>).
+</li>
+<li>
+<p>Remove the line of code that sets the <code>ItemSource</code> of the <code>ListView</code>.
+Bind the <code>Footer</code> property to the <code>Count</code> property of your <code>BindingContext</code> - this will be the number of elements in the collection since it's an <code>IList</code>.</p>
+<pre class="prettyprint-collapse"><code>&lt;ListView x:Name=&quot;allAnimals&quot;
+    <mark>ItemsSource=&quot;{Binding .}&quot;</mark>
+    IsPullToRefreshEnabled=&quot;True&quot;
+    ItemTapped=&quot;OnItemTapped&quot;
+    ItemSelected=&quot;OnItemSelected&quot;
+    RowHeight=&quot;80&quot;
+    <mark>Footer=&quot;{Binding Count}&quot;</mark>&gt;
+</code></pre>
+
+</li>
+<li>
+<p>Set the <code>FooterTemplate</code> property to a <code>DataTemplate</code> containing a:</p>
+<ul>
+<li><code>ContentView</code> with it's <code>Padding</code> property set to &quot;0,5&quot;</li>
+<li>Inside the <code>ContentView</code>, define a <code>Label</code> and data-bind the <code>Text</code> property to the <code>BindingContext</code> (the <code>Path</code> should be &quot;.&quot;).</li>
+<li>Set the <code>VerticalTextAlignment</code> property to &quot;Center&quot; and the <code>HorizontalTextAlignment</code> property to &quot;End&quot; to right-justify the text.</li>
+<li>Set the <code>FontSize</code> to &quot;Small&quot; to make it small.</li>
+<li>Add a <code>StringFormat</code> to the text property <code>Binding</code> to make the text read &quot;xx animals&quot;, where &quot;XX&quot; is the data bound count. See the code hint below for help on this.</li>
+</ul>
+</li>
+<li>
+<p>Run the application and scroll to the bottom to see the Footer template.</p>
+<pre class="prettyprint-collapse"><code>&lt;ListView.FooterTemplate&gt;
+    &lt;DataTemplate&gt;
+        &lt;ContentView Padding=&quot;0,5&quot;&gt;
+            &lt;Label FontSize=&quot;Small&quot;
+                   Text=&quot;{Binding ., StringFormat='{0} animals'}&quot;
+                   VerticalTextAlignment=&quot;Center&quot; HorizontalTextAlignment=&quot;End&quot; /&gt;
+        &lt;/ContentView&gt;
+    &lt;/DataTemplate&gt;
+&lt;/ListView.FooterTemplate&gt;
+</code></pre>
+
+</li>
+</ol>
+
+<hr>
+<h2>Exercise summary</h2>
+<p>In this exercise, you added a header and footer to your ListView using a static value on the header and a dynamic value on the footer.</p>
+<p>You can view the completed solution in the <strong>Exercise 2</strong> &gt; <strong>Completed</strong> folder of your copy of the cloned or downloaded <a href="https://github.com/XamarinUniversity/XAM312/">course materials</a>.</p>
+
+
+        <div class="align-right">
+            <a href="../StartHere.html">Go Back</a>
+        </div>
+
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/jquery.imagemapster.min.js"></script>
+    <script src="./res/js/imagemap.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft. All rights reserved.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+
+</body>
+</html>
