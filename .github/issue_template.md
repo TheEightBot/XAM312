@@ -1,7 +1,7 @@
 <!--
 Thank you so much for your contribution. Before you submit an issue, please read the following:
 
-1. Ensure you have read over contribution guidelines in the README: https://github.com/XamarinUniversity/XAM312/blob/master/README.md.
+1. Ensure you have read over contribution guidelines in the README: https://github.com/TheEightBot/XAM312/blob/master/README.md.
 
 2. If you have a question, please submit it via the Xamarin University forum: https://forums.xamarin.com/categories/university
 
